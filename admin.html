@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blonde Balance Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Poppins',Arial,sans-serif;background:#EAF3F9;color:#5B5347;line-height:1.5}
+  header{background:#A9C7DB;color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
+  header b{letter-spacing:2px}
+  main{max-width:880px;margin:0 auto;padding:24px 18px 60px}
+  .card{background:#fff;border-radius:16px;padding:24px;margin-bottom:20px;box-shadow:0 6px 20px rgba(91,83,71,.08)}
+  h1{font-size:22px;margin:0 0 6px} h2{font-size:18px;margin:0 0 14px}
+  p.help{font-size:13px;color:#6E675C;margin:0 0 16px}
+  label{display:block;font-size:13px;font-weight:700;margin:14px 0 5px}
+  input[type=text],input[type=email],input[type=password],input[type=url],input[type=number],select,textarea{
+    width:100%;padding:11px 13px;border:1.5px solid #D6CFC0;border-radius:10px;font:inherit;font-size:14px;background:#fff;color:#2E2A26}
+  textarea{min-height:84px}
+  .btn{display:inline-block;background:#5B5347;color:#fff;border:0;padding:11px 24px;border-radius:999px;font:inherit;font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;margin-top:16px}
+  .btn.blue{background:#A9C7DB;color:#2E2A26}
+  .btn.small{padding:7px 14px;font-size:11px;margin-top:0}
+  .btn.danger{background:#B0524A}
+  .btn:disabled{opacity:.5;cursor:wait}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .tabs button{background:#fff;border:1.5px solid #D6CFC0;border-radius:999px;padding:9px 18px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+  .tabs button.on{background:#A9C7DB;border-color:#A9C7DB}
+  .row{border:1.5px solid #EFEAE0;border-radius:12px;padding:14px;margin-bottom:12px;background:#FAFCFD}
+  .row-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .row-head b{font-size:15px}
+  .row-actions{display:flex;gap:6px;flex-wrap:wrap}
+  .status{font-size:14px;margin:12px 0;min-height:20px}
+  .ok{color:#2E7D4F}.err{color:#B0524A}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr}}
+  .thumb{width:52px;height:80px;object-fit:cover;border-radius:8px;vertical-align:middle;margin-right:10px}
+  details summary{cursor:pointer;font-weight:700;font-size:14px;margin-top:10px}
+</style>
+</head>
+<body>
+<header><b>BLONDE BALANCE &bull; ADMIN</b><a href="index.html" style="color:#fff;font-size:13px;font-weight:700">View public site &rarr;</a></header>
+<main>
+
+  <!-- Not connected notice -->
+  <div class="card" id="not-configured" hidden>
+    <h2>One-time setup needed</h2>
+    <p class="help">The admin page is not connected to your Supabase project yet. Open <b>js/config.js</b>, paste your Supabase Project URL and anon public key (see README.md, Steps 1 and 4), then reload this page. Nothing you type here can save until that is done.</p>
+  </div>
+
+  <!-- Login -->
+  <div class="card" id="login-card">
+    <h1>Log in to make changes</h1>
+    <p class="help">Use the admin account you created in Supabase (Authentication &rarr; Users). Only logged-in users can change the site. Visitors can only read it.</p>
+    <label for="login-email">Email</label>
+    <input type="email" id="login-email" autocomplete="username" placeholder="you@example.com">
+    <label for="login-password">Password</label>
+    <input type="password" id="login-password" autocomplete="current-password" placeholder="Your password">
+    <button class="btn blue" id="login-btn" type="button">LOG IN</button>
+    <div class="status" id="login-status"></div>
+  </div>
+
+  <!-- Editor -->
+  <div id="editor" hidden>
+    <div class="card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <div><h1 style="margin:0">Edit your site</h1><p class="help" style="margin:4px 0 0">Changes save to Supabase and show on the public site right away.</p></div>
+      <button class="btn small" id="logout-btn" type="button">LOG OUT</button>
+    </div>
+    <div class="status" id="save-status"></div>
+
+    <div class="tabs" role="tablist">
+      <button type="button" data-tab="settings" class="on">Page Text &amp; Settings</button>
+      <button type="button" data-tab="videos">Videos</button>
+      <button type="button" data-tab="testimonials">Testimonials</button>
+      <button type="button" data-tab="packages">Packages</button>
+    </div>
+
+    <!-- Settings -->
+    <section class="card tabpane" id="tab-settings">
+      <h2>Page text and settings</h2>
+      <p class="help">Booking badge, email, hero wording, and your Calendly link (used by every Book a Call button).</p>
+      <div id="settings-form"></div>
+      <button class="btn" id="settings-save" type="button">SAVE SETTINGS</button>
+      <hr style="margin:22px 0;border:none;border-top:1px solid #e5ddd2">
+      <h3>Your admin password</h3>
+      <p class="help">Set or change the password you use to log in to this admin page. If you arrived here from your invite email, set your password now.</p>
+      <label>New password</label>
+      <input type="password" id="pw-new" autocomplete="new-password" placeholder="Type a new password">
+      <button class="btn small" id="pw-save" type="button">SET PASSWORD</button>
+      <div class="status" id="pw-status"></div>
+    </section>
+
+    <!-- Videos -->
+    <section class="card tabpane" id="tab-videos" hidden>
+      <h2>Videos</h2>
+      <p class="help">Add a video by uploading the file straight from your computer. You can also upload its picture (thumbnail). Pasting a link still works as a backup. Use the arrows to reorder, the eye toggle to hide a video without deleting it.</p>
+      <div id="videos-list"></div>
+      <details id="add-video-wrap">
+        <summary>+ Add a new video</summary>
+        <div id="add-video-form"></div>
+      </details>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="card tabpane" id="tab-testimonials" hidden>
+      <h2>Testimonials</h2>
+      <p class="help">Quotes from brands, exactly as they said them. Never edit a quote into words the brand did not say.</p>
+      <div id="testimonials-list"></div>
+      <details>
+        <summary>+ Add a testimonial</summary>
+        <div id="add-testimonial-form"></div>
+      </details>
+    </section>
+
+    <!-- Packages -->
+    <section class="card tabpane" id="tab-packages" hidden>
+      <h2>Packages</h2>
+      <p class="help">Your three offers. Prices stay off the site on purpose, brands contact you for exact pricing.</p>
+      <div id="packages-list"></div>
+    </section>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
