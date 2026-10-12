@@ -141,11 +141,11 @@ async function loadData() {
 function videoCard(v, captionOverride) {
   const caption = captionOverride || v.brand;
   return '<article class="vcard reveal">' +
-    '<button class="phone" data-video="' + esc(v.video_url || "") + '" data-brand="' + esc(v.brand) + '" aria-label="Play video: ' + esc(v.brand) + '">' +
+    '<div class="phone" data-video="' + esc(v.video_url || "") + '" data-brand="' + esc(v.brand) + '">' +
       (v.thumb_url ? '<img src="' + esc(v.thumb_url) + '" alt="' + esc(v.brand) + ' video thumbnail" loading="lazy">' : '<span class="phone-fallback">' + esc(v.brand) + '</span>') +
-      '<span class="play" aria-hidden="true"></span>' +
+      '<button class="play" type="button" aria-label="Play video: ' + esc(v.brand) + '"></button>' +
       (v.format_tag ? '<span class="fmt">' + esc(v.format_tag) + '</span>' : '') +
-    '</button>' +
+    '</div>' +
     '<div class="vbrand">' + esc(v.brand) + '</div>' +
     (captionOverride ? '<div class="vmetric">' + esc(captionOverride) + '</div>' : '') +
   '</article>';
@@ -264,33 +264,81 @@ function render(data) {
     }).join("");
   }
 
-  wireVideoModal();
+  wireInlineVideos();
   wireReveal();
   wireCountUps();
 }
 
-// ---------- Video modal ----------
-function wireVideoModal() {
-  const modal = document.getElementById("video-modal");
-  const body = document.getElementById("video-modal-body");
-  if (!modal || !body) return;
-  document.querySelectorAll(".phone").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      const url = btn.getAttribute("data-video");
+// ---------- Inline video playback ----------
+function inlineEmbedUrl(url) {
+  const yt = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/i);
+  if (yt) return "https://www.youtube.com/embed/" + yt[1] + "?autoplay=1&playsinline=1&rel=0";
+  const vm = url.match(/vimeo\.com\/(?:video\/)?(\d+)/i);
+  if (vm) return "https://player.vimeo.com/video/" + vm[1] + "?autoplay=1&playsinline=1";
+  return "";
+}
+
+function wireInlineVideos() {
+  document.querySelectorAll(".phone").forEach(function (card) {
+    card.addEventListener("click", function (e) {
+      if (e.target.closest("video, iframe, a")) return;
+      if (card.classList.contains("playing")) return;
+
+      const url = card.getAttribute("data-video") || "";
       if (!url) {
-        body.innerHTML = '<p class="modal-note">This video file has not been added yet. Tanya can add it in the Admin page, and it will play here.</p>';
-      } else if (/\.(mp4|webm|mov)(\?|$)/i.test(url)) {
-        body.innerHTML = '<video src="' + esc(url) + '" controls autoplay playsinline style="width:100%;max-height:75vh;border-radius:12px"></video>';
-      } else if (/youtube|youtu\.be|vimeo|tiktok/i.test(url)) {
-        body.innerHTML = '<p class="modal-note"><a href="' + esc(url) + '" target="_blank" rel="noopener">Watch this video \u2192</a></p>';
-      } else {
-        body.innerHTML = '<p class="modal-note"><a href="' + esc(url) + '" target="_blank" rel="noopener">Watch this video \u2192</a></p>';
+        if (!card.querySelector(".phone-note")) {
+          const note = document.createElement("span");
+          note.className = "phone-note";
+          note.textContent = "Video coming soon";
+          card.appendChild(note);
+        }
+        return;
       }
-      modal.hidden = false;
+
+      // Pause any other inline video before starting this one.
+      document.querySelectorAll(".phone.playing video").forEach(function (other) {
+        if (!card.contains(other)) other.pause();
+      });
+
+      const img = card.querySelector("img");
+      const poster = img ? (img.currentSrc || img.src) : "";
+      card.classList.add("playing");
+
+      if (/\.(mp4|webm|mov)(\?|$)/i.test(url)) {
+        const video = document.createElement("video");
+        video.className = "inline-media";
+        video.src = url;
+        video.controls = true;
+        video.autoplay = true;
+        video.playsInline = true;
+        video.preload = "auto";
+        if (poster) video.poster = poster;
+        card.replaceChildren(video);
+        const started = video.play();
+        if (started && started.catch) started.catch(function () {});
+        return;
+      }
+
+      const embed = inlineEmbedUrl(url);
+      if (embed) {
+        const iframe = document.createElement("iframe");
+        iframe.className = "inline-media";
+        iframe.src = embed;
+        iframe.title = "Video player";
+        iframe.allow = "autoplay; fullscreen; picture-in-picture";
+        iframe.allowFullscreen = true;
+        card.replaceChildren(iframe);
+        return;
+      }
+
+      const link = document.createElement("a");
+      link.className = "phone-watch-link";
+      link.href = url;
+      link.target = "_blank";
+      link.rel = "noopener";
+      link.textContent = "Watch this video";
+      card.replaceChildren(link);
     });
-  });
-  modal.addEventListener("click", function (e) {
-    if (e.target === modal || e.target.closest(".modal-close")) { modal.hidden = true; body.innerHTML = ""; }
   });
 }
 
