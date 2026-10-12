@@ -31,10 +31,11 @@ const JSON_SETTING_FIELDS = [
   { key: "aboutBullets", label: "Why Work With Me bullet list (JSON list)" }
 ];
 const CATEGORIES = [
-  { value: "beauty", label: "Beauty & Fashion" },
+  { value: "beauty", label: "Beauty" },
+  { value: "fashion", label: "Fashion" },
   { value: "home", label: "Home & Lifestyle" },
-  { value: "tech", label: "Tech & Apps" },
-  { value: "pets", label: "Pets" }
+  { value: "tech", label: "Tech" },
+  { value: "pet", label: "Pet" }
 ];
 
 let sb = null;
