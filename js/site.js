@@ -60,21 +60,26 @@ const SEED = {
     ]
   },
   videos: [
-    { brand: "kitsch",         category: "beauty",   format_tag: "TALKING HEAD", video_url: "", thumb_url: "assets/frames/beauty-1.jpg",   sort_order: 0,  visible: true },
-    { brand: "Era Tua",        category: "beauty",   format_tag: "LIFESTYLE",    video_url: "", thumb_url: "assets/frames/beauty-2.jpg",   sort_order: 1,  visible: true },
-    { brand: "Kayura",         category: "beauty",   format_tag: "DEMO",         video_url: "", thumb_url: "assets/frames/beauty-3.jpg",   sort_order: 2,  visible: true },
-    { brand: "Azazie",         category: "beauty",   format_tag: "TRY-ON",       video_url: "", thumb_url: "assets/frames/beauty-4.jpg",   sort_order: 3,  visible: true },
-    { brand: "Mott & Bow",     category: "beauty",   format_tag: "FASHION",      video_url: "", thumb_url: "assets/frames/beauty-5.jpg",   sort_order: 4,  visible: true },
-    { brand: "Uqora",          category: "home", format_tag: "TALKING HEAD", video_url: "", thumb_url: "assets/frames/wellness-1.jpg", sort_order: 5,  visible: true },
-    { brand: "FS8",            category: "home", format_tag: "LIFESTYLE",    video_url: "", thumb_url: "assets/frames/wellness-2.jpg", sort_order: 6,  visible: true },
-    { brand: "HotWorx",        category: "home", format_tag: "LIFESTYLE",    video_url: "", thumb_url: "assets/frames/wellness-3.jpg", sort_order: 7,  visible: true },
-    { brand: "Kwikset",        category: "home", format_tag: "DEMO",         video_url: "", thumb_url: "assets/frames/wellness-4.jpg", sort_order: 8,  visible: true },
-    { brand: "FurLife",        category: "pets", format_tag: "PET LIFESTYLE", video_url: "", thumb_url: "assets/frames/wellness-5.jpg", sort_order: 9,  visible: true },
-    { brand: "Fetch Rewards",  category: "tech", format_tag: "APP DEMO",     video_url: "", thumb_url: "assets/frames/paid-1.jpg",     sort_order: 10, visible: true },
-    { brand: "Kwikset",        category: "tech", format_tag: "APP DEMO",     video_url: "", thumb_url: "assets/frames/paid-2.jpg",     sort_order: 11, visible: true },
-    { brand: "Quickie",        category: "tech", format_tag: "POV",          video_url: "", thumb_url: "assets/frames/paid-3.jpg",     sort_order: 12, visible: true },
-    { brand: "Fanatics",       category: "tech", format_tag: "AD CREATIVE",  video_url: "", thumb_url: "assets/frames/paid-4.jpg",     sort_order: 13, visible: true },
-    { brand: "Strava",         category: "tech", format_tag: "AD CREATIVE",  video_url: "", thumb_url: "assets/frames/paid-5.jpg",     sort_order: 14, visible: true }
+    { brand: "kitsch",           category: "beauty",     format_tag: "TALKING HEAD",    video_url: "", thumb_url: "assets/frames/beauty-1.jpg",     sort_order: 0,  visible: true },
+    { brand: "Era Tua",          category: "beauty",     format_tag: "LIFESTYLE",       video_url: "", thumb_url: "assets/frames/beauty-2.jpg",     sort_order: 1,  visible: true },
+    { brand: "Kayura",           category: "beauty",     format_tag: "DEMO",            video_url: "", thumb_url: "assets/frames/beauty-3.jpg",     sort_order: 2,  visible: true },
+    { brand: "Smooche",          category: "beauty",     format_tag: "DEMO",            video_url: "", thumb_url: "",                               sort_order: 3,  visible: true },
+    { brand: "Pacifica Beauty",  category: "beauty",     format_tag: "DEMO",            video_url: "", thumb_url: "",                               sort_order: 4,  visible: true },
+    { brand: "Azazie",           category: "fashion",    format_tag: "TRY-ON",          video_url: "", thumb_url: "assets/frames/beauty-4.jpg",     sort_order: 5,  visible: true },
+    { brand: "Mott & Bow",       category: "fashion",    format_tag: "FASHION",         video_url: "", thumb_url: "assets/frames/beauty-5.jpg",     sort_order: 6,  visible: true },
+    { brand: "Curvy Sweet",      category: "fashion",    format_tag: "TRY-ON",          video_url: "", thumb_url: "",                               sort_order: 7,  visible: true },
+    { brand: "Zazzle",           category: "home",       format_tag: "GREENSCREEN",     video_url: "", thumb_url: "",                               sort_order: 8,  visible: true },
+    { brand: "Meliusly",         category: "home",       format_tag: "DEMO",            video_url: "", thumb_url: "",                               sort_order: 9,  visible: true },
+    { brand: "Next Play",        category: "home",       format_tag: "GAME DEMO",       video_url: "", thumb_url: "",                               sort_order: 10, visible: true },
+    { brand: "Aep Scent",        category: "home",       format_tag: "TALKING HEAD",    video_url: "", thumb_url: "",                               sort_order: 11, visible: true },
+    { brand: "Fetch Rewards",    category: "tech",       format_tag: "APP DEMO",        video_url: "", thumb_url: "assets/frames/paid-1.jpg",       sort_order: 12, visible: true },
+    { brand: "Kwikset",          category: "tech",       format_tag: "DEMO",            video_url: "", thumb_url: "assets/frames/wellness-4.jpg",   sort_order: 13, visible: true },
+    { brand: "Quickie",          category: "tech",       format_tag: "AD CREATIVE",     video_url: "", thumb_url: "assets/frames/paid-3.jpg",       sort_order: 14, visible: true },
+    { brand: "Fanatics",         category: "tech",       format_tag: "AD CREATIVE",     video_url: "", thumb_url: "assets/frames/paid-4.jpg",       sort_order: 15, visible: true },
+    { brand: "Strava",           category: "tech",       format_tag: "AD CREATIVE",     video_url: "", thumb_url: "assets/frames/paid-5.jpg",       sort_order: 16, visible: true },
+    { brand: "FurLife",          category: "pet",        format_tag: "PET LIFESTYLE",   video_url: "", thumb_url: "assets/frames/wellness-5.jpg",   sort_order: 17, visible: true },
+    { brand: "Heusom",           category: "pet",        format_tag: "PET DEMO",        video_url: "", thumb_url: "",                               sort_order: 18, visible: true },
+    { brand: "Minties",          category: "pet",        format_tag: "PET LIFESTYLE",   video_url: "", thumb_url: "",                               sort_order: 19, visible: true }
   ],
   testimonials: [
     { brand: "Kwikset",            attribution: "Home Security",    quote: "Always love your content, thank you so much!", sort_order: 0 },
@@ -238,7 +243,7 @@ function render(data) {
   }
 
   // Portfolio categories
-  ["beauty", "home", "tech", "pets"].forEach(function (cat) {
+  ["beauty", "fashion", "home", "tech", "pet"].forEach(function (cat) {
     const el = document.getElementById("grid-" + cat);
     if (el) {
       el.innerHTML = data.videos.filter(function (v) { return v.category === cat; }).map(function (v) { return videoCard(v); }).join("");
