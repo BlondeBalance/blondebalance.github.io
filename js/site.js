@@ -77,13 +77,13 @@ const SEED = {
     { brand: "Quickie",          category: "tech",       format_tag: "AD CREATIVE",     video_url: "", thumb_url: "assets/frames/paid-3.jpg",       sort_order: 14, visible: true },
     { brand: "Fanatics",         category: "tech",       format_tag: "AD CREATIVE",     video_url: "", thumb_url: "assets/frames/paid-4.jpg",       sort_order: 15, visible: true },
     { brand: "Strava",           category: "tech",       format_tag: "AD CREATIVE",     video_url: "", thumb_url: "assets/frames/paid-5.jpg",       sort_order: 16, visible: true },
-    { brand: "FurLife",          category: "pet",        format_tag: "PET LIFESTYLE",   video_url: "", thumb_url: "assets/frames/wellness-5.jpg",   sort_order: 17, visible: true },
+        { brand: "PopSips",        category: "home",    format_tag: "LIFESTYLE",    video_url: "", thumb_url: "",                             sort_order: 20, visible: true },
     { brand: "Heusom",           category: "pet",        format_tag: "PET DEMO",        video_url: "", thumb_url: "",                               sort_order: 18, visible: true },
     { brand: "Minties",          category: "pet",        format_tag: "PET LIFESTYLE",   video_url: "", thumb_url: "",                               sort_order: 19, visible: true }
   ],
   testimonials: [
     { brand: "Kwikset",            attribution: "Home Security",    quote: "Always love your content, thank you so much!", sort_order: 0 },
-    { brand: "FurLife",            attribution: "Pet Lifestyle",    quote: "Fast turnaround! This is great!", sort_order: 1 },
+    { brand: "FurLife",            attribution: "Pet Lifestyle",   quote: "Fast turnaround! This is great!", sort_order: 1 },
     { brand: "Vitamin Wholesalers", attribution: "Supplements",     quote: "Submitted awesome work and we will be working with them again in the future!", sort_order: 2 },
     { brand: "Forge Skin",         attribution: "Skincare",       quote: "Great, will return again.", sort_order: 3 },
     { brand: "Viita Supply",       attribution: "Lifestyle & Home", quote: "Tanya had tight turnaround, clear communication, and performed immediately in ads!", sort_order: 4 }
@@ -272,6 +272,23 @@ function render(data) {
   wireInlineVideos();
   wireReveal();
   wireCountUps();
+  wireAnalyticsClicks();
+}
+
+// ---------- Analytics (Google Analytics 4) ----------
+function gaEvent(name, params) {
+  try { if (typeof window.gtag === "function") window.gtag("event", name, params || {}); } catch (e) {}
+}
+
+function wireAnalyticsClicks() {
+  document.querySelectorAll(".calendly-link").forEach(function (a) {
+    a.addEventListener("click", function () { gaEvent("book_call_click", {}); });
+  });
+  document.querySelectorAll(".contact-mailto").forEach(function (a) {
+    a.addEventListener("click", function () { gaEvent("email_click", { method: "mailto" }); });
+  });
+  const btn = document.getElementById("copy-email");
+  if (btn) btn.addEventListener("click", function () { gaEvent("email_click", { method: "copy" }); });
 }
 
 // ---------- Inline video playback ----------
@@ -308,6 +325,7 @@ function wireInlineVideos() {
       const img = card.querySelector("img");
       const poster = img ? (img.currentSrc || img.src) : "";
       card.classList.add("playing");
+      gaEvent("video_play", { video_brand: card.getAttribute("data-brand") || "" });
 
       if (/\.(mp4|webm|mov)(\?|$)/i.test(url)) {
         const video = document.createElement("video");
